@@ -17,7 +17,7 @@ def extract_prompt_info(description: str) -> Dict[str, Any]:
     - Projects
     - Gpa
     
-    If a field is not mentioned, return it as an empty list or string.
+    If a field is not mentioned, return it as an empty list. If no gpa, return sting of 0.
     
     User Prompt:
     {description}
@@ -42,10 +42,10 @@ def extract_prompt_info(description: str) -> Dict[str, Any]:
         resume_info = {}
     
     return {
-        "skills": resume_info.get("Skills", {}),
+        "skills": resume_info.get("Skills", []),
         "work_experience": resume_info.get("Work_experience", []),
         "education": resume_info.get("Education", []),
         "certifications": resume_info.get("Certifications", []),
         "projects": resume_info.get("Projects", []),
-        "gpa": resume_info.get("Gpa", "")
+        "gpa": resume_info.get("Gpa", "0")
     }

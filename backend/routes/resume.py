@@ -92,9 +92,9 @@ def extract_resume_data(pdf_path: str, model_type: str):
         dict: Extracted resume data.
     """
     print("model type :" ,model_type)
-    if model_type == "Gpt_fitz":
+    if model_type == "gpt_fitz":
         return gpt_fitz_extractor(pdf_path)  # Calls function from gpt_fitz.py
-    elif model_type == "Mistral":
+    elif model_type == "mistral":
         return mistral_extractor(pdf_path)  # Calls function from mistral.py
     else:
         raise ValueError(f"Invalid model type: {model_type}. Choose 'gpt_fitz' or 'mistral'.")
@@ -302,7 +302,9 @@ def get_travel_resume_by_id(db: Session, resume_id: int):
         print(f"[❌] Error fetching travel resume: {e}")
         return None
 
-def _process_resume_search_rag(request: SearchRequest, db: Session) -> None:
+
+@router.post("/search-resume/")
+async def process_resume_search_rag(request: SearchRequest, db: Session = Depends(get_db)):
     """
     Process a resume search request and send results by email.
     """
@@ -352,26 +354,46 @@ def _process_resume_search_rag(request: SearchRequest, db: Session) -> None:
                 
                 if extracted_prompt_info.get("skills"):
                     for i in resume.skills:
-                        match_score += len(set(extracted_prompt_info["skills"]) & set(resume.skills[i]))
+                        if isinstance(esume.skills[i], list):
+                            match_score += len(set(extracted_prompt_info["skills"]) & set(resume.skills[i]))
+                        else:
+                            match_score += len(set(extracted_prompt_info["skills"]) & set([resume.skills[i]]))
                 
                 if extracted_prompt_info.get("work_experience"):
                     for i in resume.work_experience:
-                        match_score += len(set(extracted_prompt_info["work_experience"]) & set(resume.work_experience[i]))
+                        for e in i:
+                            if isinstance(i[e], list):
+                                match_score += len(set(extracted_prompt_info["work_experience"]) & set(i[e]))
+                            else:
+                                match_score += len(set(extracted_prompt_info["work_experience"]) & set([i[e]]))
                 
                 if extracted_prompt_info.get("education"):
                     for i in resume.education:
-                        match_score += len(set(extracted_prompt_info["education"]) & set(resume.education[i]))
+                        for e in i:
+                            if isinstance(i[e], list):
+                                match_score += len(set(extracted_prompt_info["education"]) & set(i[e]))
+                            else:
+                                match_score += len(set(extracted_prompt_info["education"]) & set([i[e]]))
                 
                 if extracted_prompt_info.get("certifications"):
                     for i in resume.certifications:
-                        match_score += len(set(extracted_prompt_info["certifications"]) & set(resume.certifications[i]))
+                        for e in i:
+                            if isinstance(i[e], list):
+                                match_score += len(set(extracted_prompt_info["certifications"]) & set(i[e]))
+                            else:
+                                match_score += len(set(extracted_prompt_info["certifications"]) & set([i[e]]))
                 
                 if extracted_prompt_info.get("projects"):
                     for i in resume.projects:
-                        match_score += len(set(extracted_prompt_info["projects"]) & set(resume.projectss[i]))
+                        for e in i:
+                            if isinstance(i[e], list):
+                                match_score += len(set(extracted_prompt_info["projects"]) & set(i[e]))
+                            else:
+                                match_score += len(set(extracted_prompt_info["projects"]) & set([i[e]]))
+
                     
                 if extracted_prompt_info.get("gpa") and resume.gpa:
-                    match_score += 1 if extracted_prompt_info["gpa"] == resume.gpa else 0
+                    match_score += 1 if int(extracted_prompt_info["gpa"]) >= int(resume.gpa) else 0
                 
                 print("match_score :",match_score)
                 matching_resumes.append((match_score, resume))
@@ -380,8 +402,8 @@ def _process_resume_search_rag(request: SearchRequest, db: Session) -> None:
             matching_resumes.sort(reverse=True, key=lambda x: x[0])
 
             # Return best-matching resumes
-            print("Reume with best match :  Id",matching_resumes.id)
-            return matching_resumes[0]
+            print("Reume with best match -> email:",matching_resumes[0][1].email)
+            return matching_resumes[0][1]
         
     except Exception as e:
         print(f"Error processing search request: {str(e)}")
@@ -393,7 +415,7 @@ def _process_resume_search_rag(request: SearchRequest, db: Session) -> None:
 
 
 
-@router.post("/search-resume/")
+'''@router.post("/search-resume/")
 async def search_resume(
     request: SearchRequest,
     background_tasks: BackgroundTasks,
@@ -418,4 +440,4 @@ async def search_resume(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to initiate resume search: {str(e)}"
-        )
+        ) '''

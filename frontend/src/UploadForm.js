@@ -4,7 +4,7 @@ import axios from "axios";
 
 function UploadForm() {
   const [file, setFile] = useState(null);
-  const [modelType, setModelType] = useState("Gpt+fitz");
+  const [modelType, setModelType] = useState("gpt_fitz");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -41,8 +41,8 @@ function UploadForm() {
           <input
             type="radio"
             value="Gpt+fitz"
-            checked={modelType === "Gpt+fitz"}
-            onChange={() => setModelType("Gpt+fitz")}
+            checked={modelType === "gpt_fitz"}
+            onChange={() => setModelType("gpt_fitz")}
           />
           GPT+Fitz
         </label>
@@ -50,8 +50,8 @@ function UploadForm() {
           <input
             type="radio"
             value="Mistral"
-            checked={modelType === "Mistral"}
-            onChange={() => setModelType("Mistral")}
+            checked={modelType === "mistral"}
+            onChange={() => setModelType("mistral")}
           />
           Mistral
         </label>

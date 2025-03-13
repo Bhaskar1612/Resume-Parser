@@ -13,5 +13,5 @@ class Resume(Base):
     education = Column(JSON, nullable=False)  # List[Dict[str, Any]]
     certifications = Column(JSON, nullable=True)  # List[Dict[str, Any]]
     projects = Column(JSON, nullable=False)  # List[Dict[str, Any]]
-    gpa = Column(String, nullable=True)
+    gpa = Column(String, nullable=True, default="0")
     model_type = Column(String, nullable=False)
