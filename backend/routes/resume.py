@@ -354,7 +354,7 @@ async def process_resume_search_rag(request: SearchRequest, db: Session = Depend
                 
                 if extracted_prompt_info.get("skills"):
                     for i in resume.skills:
-                        if isinstance(esume.skills[i], list):
+                        if isinstance(resume.skills[i], list):
                             match_score += len(set(extracted_prompt_info["skills"]) & set(resume.skills[i]))
                         else:
                             match_score += len(set(extracted_prompt_info["skills"]) & set([resume.skills[i]]))
