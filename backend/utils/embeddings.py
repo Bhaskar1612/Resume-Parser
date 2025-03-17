@@ -31,6 +31,8 @@ def init_pinecone():
     except Exception as e:
         print(f"[❌] Error initializing Pinecone: {e}")
         return None
+    
+index = init_pinecone()
 
 def generate_embeddings(text: str) -> List[float]:
     """
@@ -62,7 +64,6 @@ def store_embedding(text: str, id: int) -> int:
     Returns:
         int: 1 if success, 0 if failure.
     """
-    index = init_pinecone()
     
     if index is None:
         print("[⚠️] Pinecone index not initialized. Skipping storage.")
@@ -98,8 +99,6 @@ def match_embeddings(user_embedding, top_k=3):
     Returns:
     - str: The ID of the highest similarity match.
     """
-
-    index = init_pinecone()
     
     if index is None:
         print("[⚠️] Pinecone index not initialized. Skipping storage.")

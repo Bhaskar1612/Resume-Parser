@@ -43,39 +43,57 @@ def get_travel_resume(resume_id: int, db: Session = Depends(get_db)):
 
 def store_resume_data(extracted_data: dict, db: Session):
     """
-    Stores the extracted resume data into the database.
+    Stores or updates the extracted resume data in the database.
 
     Args:
         extracted_data (dict): Parsed resume details.
         db (Session): Database session.
 
     Returns:
-        Resume: The stored resume entry.
+        int: The stored or updated resume entry ID.
     """
     try:
-        # Create a Resume object
-        resume_entry = Resume(
-            name=extracted_data.get("Name"),
-            email=extracted_data.get("Email"),
-            phone_number=extracted_data.get("Phone Number"),
-            skills=extracted_data.get("Skills"),
-            work_experience=extracted_data.get("Work Experience"),
-            education=extracted_data.get("Education"),
-            certifications=extracted_data.get("Certifications"),
-            projects=extracted_data.get("Projects"),
-            gpa=extracted_data.get("Gpa"),
-            model_type=extracted_data.get("model_type")  # Store the extraction model used
-        )
+        # Check if a record with the given email already exists
+        existing_entry = db.query(Resume).filter_by(email=extracted_data.get("Email")).first()
 
-        # Add to database session
-        db.add(resume_entry)
-        db.commit()
-        db.refresh(resume_entry)  # Get the latest state from DB
+        if existing_entry:
+            # Update existing entry
+            existing_entry.name = extracted_data.get("Name", existing_entry.name)
+            existing_entry.phone_number = extracted_data.get("Phone Number", existing_entry.phone_number)
+            existing_entry.skills = extracted_data.get("Skills", existing_entry.skills)
+            existing_entry.work_experience = extracted_data.get("Work Experience", existing_entry.work_experience)
+            existing_entry.education = extracted_data.get("Education", existing_entry.education)
+            existing_entry.certifications = extracted_data.get("Certifications", existing_entry.certifications)
+            existing_entry.projects = extracted_data.get("Projects", existing_entry.projects)
+            existing_entry.gpa = extracted_data.get("Gpa", existing_entry.gpa)
+            existing_entry.model_type = extracted_data.get("model_type", existing_entry.model_type)
 
-        print("Extracted data added successfully to the table with id:",resume_entry.id)
-        return resume_entry.id  # Return the stored entry
+            db.commit()
+            db.refresh(existing_entry)
+            print("Existing resume entry updated successfully with ID:", existing_entry.id)
+            return existing_entry.id
+        else:
+            # Create a new entry
+            resume_entry = Resume(
+                name=extracted_data.get("Name"),
+                email=extracted_data.get("Email"),
+                phone_number=extracted_data.get("Phone Number"),
+                skills=extracted_data.get("Skills"),
+                work_experience=extracted_data.get("Work Experience"),
+                education=extracted_data.get("Education"),
+                certifications=extracted_data.get("Certifications"),
+                projects=extracted_data.get("Projects"),
+                gpa=extracted_data.get("Gpa"),
+                model_type=extracted_data.get("model_type")
+            )
+
+            db.add(resume_entry)
+            db.commit()
+            db.refresh(resume_entry)
+            print("New resume entry added successfully with ID:", resume_entry.id)
+            return resume_entry.id
     except Exception as e:
-        db.rollback()  # Rollback if any error occurs
+        db.rollback()
         print(f"Error storing resume data: {str(e)}")
         return None
 

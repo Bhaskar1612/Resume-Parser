@@ -8,16 +8,18 @@ client = OpenAI(
 
 def extract_prompt_info(description: str) -> Dict[str, Any]:
     print("Generating information based on user prompt")
-    prompt = f"""Analyze the following user prompt and extract relevant resume details if present.
-    Extract the following fields:
-    - Skills
-    - Work experience
-    - Education
-    - Certifications
-    - Projects
-    - Gpa
-    
-    If a field is not mentioned, return it as an empty list. If no gpa, return sting of 0.
+    prompt = f"""Extract relevant resume details from the given user description. 
+The user may provide explicit or implicit information about their skills, work experience, education, certifications, projects, or GPA.
+
+Extract and classify the following fields:
+- Skills: Includes programming languages, frameworks, libraries, tools, technologies, methodologies, and relevant technical or domain-specific expertise.
+- Work Experience: Job roles, companies, internships, or professional experiences.
+- Education: Degrees, institutions, and areas of study.
+- Certifications: Any relevant certifications or professional qualifications.
+- Projects: Names or descriptions of personal, academic, or professional projects.
+- GPA: If mentioned, extract it; otherwise, return "0".
+
+If a field is not mentioned, return it as an empty list.
     
     User Prompt:
     {description}
