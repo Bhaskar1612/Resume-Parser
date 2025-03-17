@@ -3,17 +3,18 @@ import json
 import os
 from openai import OpenAI
 
+# Initialize OpenAI client
+api_key = os.getenv('OPENAI_API_KEY')
+if not api_key:
+    raise ValueError("Missing OpenAI API key. Set 'OPENAI_API_KEY' in the environment.")
+
+client = OpenAI(api_key=api_key)
+print("[INFO] OpenAI client initialized successfully.")
+
 def extract_resume_data_and_structure(pdf_path):
     """Extracts text from a PDF resume and processes it with GPT-4 Turbo to return structured JSON."""
     
     try:
-        # Initialize OpenAI client
-        api_key = os.getenv('OPENAI_API_KEY')
-        if not api_key:
-            raise ValueError("Missing OpenAI API key. Set 'OPENAI_API_KEY' in the environment.")
-
-        client = OpenAI(api_key=api_key)
-        print("[INFO] OpenAI client initialized successfully.")
 
         # Extract text from the PDF
         print(f"[INFO] Extracting text from PDF: {pdf_path}")

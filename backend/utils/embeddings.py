@@ -53,13 +53,16 @@ def generate_embeddings(text: str) -> List[float]:
         print(f"[❌] Error generating embedding: {e}")
         return []
 
+import uuid
+from typing import Optional
+
 def store_embedding(text: str, id: int) -> int:
     """
-    Stores an embedding in the Pinecone index with error handling.
+    Stores or updates an embedding in the Pinecone index with error handling.
 
     Args:
         text (str): The input text to embed and store.
-        id (str): A unique identifier to associate with the embedding.
+        id (int): A unique identifier to associate with the embedding.
 
     Returns:
         int: 1 if success, 0 if failure.
@@ -75,15 +78,32 @@ def store_embedding(text: str, id: int) -> int:
         print("[⚠️] Failed to generate embedding. Skipping storage.")
         return 0
     
-    unique_id = str(uuid.uuid4())  # Generate a unique ID
-    
     try:
-        index.upsert(vectors=[(unique_id, embedding, {"text": text, "id": str(id)})])
-        print(f"[✅] Stored embedding with ID: {unique_id}")
+        # Check if an embedding with the given "id" already exists
+        existing_results = index.query(vector=embedding, top_k=1, include_metadata=True)
+
+        existing_pinecone_id: Optional[str] = None
+        for match in existing_results["matches"]:
+            if match["metadata"].get("id") == str(id):
+                existing_pinecone_id = match["id"]
+                break
+
+        # Use the existing Pinecone ID if found, otherwise generate a new one
+        pinecone_id = existing_pinecone_id if existing_pinecone_id else str(uuid.uuid4())
+
+        # Upsert (update if exists, insert if not)
+        index.upsert(vectors=[(pinecone_id, embedding, {"text": text, "id": str(id)})])
+
+        if existing_pinecone_id:
+            print(f"[✅] Updated embedding with ID: {existing_pinecone_id}")
+        else:
+            print(f"[✅] Stored new embedding with ID: {pinecone_id}")
+
         return 1
     except Exception as e:
         print(f"[❌] Error storing embedding in Pinecone: {e}")
         return 0
+
     
 
 def match_embeddings(user_embedding, top_k=3):

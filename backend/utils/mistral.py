@@ -2,17 +2,18 @@ from mistralai import Mistral
 import json
 import os
 
+# Initialize Mistral client
+api_key = os.getenv('MISTRAL_API_KEY')
+if not api_key:
+    raise ValueError("Missing MISTRAL API key. Set 'MISTRAL_API_KEY' in the environment.")
+        
+client = Mistral(api_key=api_key)
+print("[INFO] Mistral client initialized successfully.")
+
 def extract_and_structure_resume(pdf_path: str):
     """Extracts text from a PDF resume using Mistral OCR and processes it to return structured JSON."""
     
     try:
-        # Initialize Mistral client
-        api_key = os.getenv('MISTRAL_API_KEY')
-        if not api_key:
-            raise ValueError("Missing MISTRAL API key. Set 'MISTRAL_API_KEY' in the environment.")
-        
-        client = Mistral(api_key=api_key)
-        print("[INFO] Mistral client initialized successfully.")
 
         # Step 1: Upload PDF to Mistral
         print(f"[INFO] Uploading PDF: {pdf_path}")
