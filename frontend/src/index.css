@@ -1,181 +1,188 @@
-/* Global Styles */
+/* General Styles */
+.app-container {
+  max-width: 900px;
+  /* Limit width */
+  margin: 50px auto;
+  /* Center it */
+  padding: 30px;
+  border: 3px solid #3498db;
+  /* Blue border */
+  border-radius: 15px;
+  /* Rounded corners */
+  background: white;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  /* Subtle shadow */
+  text-align: center;
+}
+
 body {
-  font-family: Arial, sans-serif;
-  background-color: #121212;
-  /* Black background */
-  color: #ffffff;
-  /* White text */
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(to right, #e3f2fd, #bbdefb);
+  margin: 0;
+  padding: 0;
+  color: #333;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  margin: 0;
+  min-height: 100vh;
+  box-shadow: inset 0 0 10px 5px rgba(240, 6, 209, 0.959);
 }
 
+h1,
+h2,
+h3 {
+  text-align: center;
+  color: #3498db;;
+  font-size: 2rem;
+}
 
 /* Homepage Styles */
 .homepage-container {
   text-align: center;
   padding: 50px;
+  
 }
 
 .homepage-title {
-  font-size: 3rem;
-  color: purple;
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: #3498db;
+  margin-bottom: 20px;
 }
 
 .homepage-buttons {
-  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
 }
 
 .homepage-button {
-  background-color: purple;
+  background: linear-gradient(135deg, #3498db, #9b59b6);
   color: white;
-  padding: 10px 20px;
-  margin: 10px;
+  padding: 12px 20px;
   text-decoration: none;
-  border-radius: 5px;
   font-size: 1.2rem;
-  display: inline-block;
+  border-radius: 8px;
+  transition: all 0.3s ease-in-out;
 }
 
-/* Search Page Styles */
-.search-container {
-  text-align: center;
-  padding: 50px;
+.homepage-button:hover {
+  background: linear-gradient(135deg, #9b59b6, #3498db);
+  transform: scale(1.05);
 }
 
-.search-input {
-  padding: 10px;
-  width: 300px;
-  margin: 10px;
-  border-radius: 5px;
-}
-
-.search-button {
-  background-color: #7a32ff;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  cursor: pointer;
-  border-radius: 5px;
-}
-
-/* Search Result Styles */
+/* Form & Input Styles */
+.container,
+.search-container,
 .result-container {
-  text-align: center;
-  padding: 50px;
-  max-height: 500px;
-  /* Adjust height as needed */
-  overflow-y: auto;
-  /* Enables vertical scrolling */
-  border: 1px solid purple;
-  margin-bottom: 100px;
-  max-width: 1300px;
-}
-
-.resume-details {
-  background-color: #222;
+  background: white;
   padding: 30px;
-  border-radius: 10px;
-  display: inline-block;
-  text-align: left;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  white-space: pre-wrap;
-  /* Ensures JSON-like formatting */
-}
-
-.resume-details h3 {
-  color: purple;
-}
-
-/* Card Container */
-.container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  
-  background-color: #121212;
-  color: #fff;
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: #1e1e1e;
-  
   border-radius: 12px;
-  width: 1000px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  border: 3px solid #7b39ff;
-  height: 210px;
-  /* Purple border */
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  width: 90%;
+  margin: auto;
+  text-align: center;
 }
 
-h2 {
-  margin-bottom: 15px;
-  font-size: 1.5rem;
-  background-color: #7a32ff;
-  border-radius: 12px;
-  padding: 20px;
-}
-
+input[type="text"],
 input[type="file"] {
-  margin: 10px 0;
-  padding: 5px;
-  border-radius: 5px;
-  background: #2c2c2c;
-  color: white;
-  border: none;
-  margin: 15px;
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border: 2px solid #3498db;
+  border-radius: 6px;
+  font-size: 1rem;
+  background: #ecf0f1;
 }
 
-label {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  margin: 5px 0;
-}
+
 
 button {
-  margin-top: 15px;
-  padding: 10px 15px;
-  background-color: #7a32ff;
+  width: 105%;
+  padding: 12px;
+  background: linear-gradient(135deg, #3498db, #9b59b6);
   color: white;
+  font-size: 1.2rem;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   cursor: pointer;
-  font-size: 1rem;
-  transition: background 0.3s ease;
+  transition: all 0.3s ease-in-out;
+  margin-top: 15px;
 }
 
 button:hover {
-  background-color: #6228d5;
+  background: linear-gradient(135deg, #9b59b6, #3498db);
+  transform: scale(1.05);
 }
 
 button:disabled {
-  background-color: #444;
+  background: #95a5a6;
   cursor: not-allowed;
 }
 
-/* Thank You Page */
-.thank-you {
-  font-size: 24px;
-  color: white;
-}
-
-.back-btn {
+/* Search Result Page */
+.resume-details {
+  text-align: left;
   margin-top: 20px;
-  display: inline-block;
-  text-decoration: none;
-  color: #8A2BE2;
-  font-weight: bold;
-  font-size: 20px;
 }
 
-.back-btn:hover {
-  text-decoration: underline;
+.resume-details p {
+  font-size: 1rem;
+  margin: 5px 0;
+}
+
+.resume-details h3 {
+  margin-top: 15px;
+  color: #34495e;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+ul li {
+  background: #ecf0f1;
+  padding: 8px;
+  margin: 5px 0;
+  border-radius: 6px;
+}
+
+ul li:hover {
+  background: #dfe6e9;
+}
+
+/* Thank You Page */
+.container h2 {
+  font-size: 2rem;
+  color: #3498db;
+}
+
+.container p {
+  font-size: 1.1rem;
+  margin-top: 10px;
+}
+
+.container button {
+  background: linear-gradient(135deg, #3498db, #9b59b6);
+}
+
+.container button:hover {
+  background: linear-gradient(135deg, #9b59b6, #3498db);
+    transform: scale(1.05);
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .homepage-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .container,
+  .search-container,
+  .result-container {
+    max-width: 90%;
+  }
 }
