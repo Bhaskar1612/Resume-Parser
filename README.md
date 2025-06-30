@@ -33,27 +33,16 @@ ResumeParserAI is an intelligent resume parsing and retrieval system that uses *
 ```bash
 git clone https://github.com/yourusername/resume-parser-ai.git
 cd resume-parser-ai/backend
-docker build -t resume-backend .
-docker run -p 8000:8000 resume-backend
-```
-
-Or use Kubernetes:
-```bash
-kubectl apply -f kubernetes-backend.yaml
+uvicorn main:app --reload
 ```
 
 ### 💻 Frontend Setup
 
 ```bash
 cd ../frontend
-docker build -t resume-frontend .
-docker run -p 3000:3000 resume-frontend
+npm start
 ```
 
-Kubernetes:
-```bash
-kubectl apply -f kubernetes-frontend.yaml
-```
 
 ## 📈 Pipeline Overview
 
